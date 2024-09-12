@@ -1,4 +1,4 @@
 pub struct Agent {
-    polarization: i32,
-    persuadable_level: i32 
+    pub polarization: i32,
+    pub persuadable_level: i32 
 }

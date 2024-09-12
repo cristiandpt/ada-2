@@ -1,2 +1,2 @@
-pub mod agent
-pub mod aocial_network
+pub mod agent;
+pub mod social_network;
