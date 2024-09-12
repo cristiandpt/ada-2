@@ -1,4 +1,5 @@
+#[derive(Debug)]
 pub struct Agent {
-    pub polarization: i32,
-    pub persuadable_level: i32 
+    pub opinion: i32,
+    pub receptivity: f32 
 }
