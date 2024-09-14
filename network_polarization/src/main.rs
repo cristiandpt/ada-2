@@ -1,9 +1,11 @@
 mod models;
 mod modex;
+mod files_loader;
 
 use models::agent::Agent;
 use models::social_network::SocialNetwork;
 use modex::modex::individual_effort;
+use files_loader::file_loader;
 
 use std::fs;
 use std::env;
@@ -19,65 +21,13 @@ fn main() {
 
     let mut social_network = SocialNetwork {
         resouces: 35,
-        agents: vec![]
+        agents: match file_loader::load_agents_from_file() {
+            Ok(agents) => agents,
+            Err(error) => panic!("Error reading file: {}", error) 
+        }
     };
 
-    let working_directory = env::current_dir();
-    match working_directory {
-        Ok(path) => {
-            let resources_dir = path.join("src/resources");
-            let file_path = resources_dir.join("Prueba1.txt");
-            print!("{}", file_path.display());
-            let file = File::open(file_path);
-            match file {
-                Ok(file) => {
-                    let reader = BufReader::new(file);
-                    for line in reader.lines() {
-                        match line {
-                            Ok(line) => {
-                                let words_in_line = line.split(",").collect::<Vec<&str>>();
-                                if let Some(fs_opinion) = words_in_line.get(0) {
-                                    if let Some(fs_receptivity) = words_in_line.get(1) { { 
-                                            match fs_opinion.parse::<i32>() {
-                                                Ok(opinion) => {
-                                                    match fs_receptivity.parse::<f32>() {
-                                                        Ok(receptivity) => {
-                                                            social_network.agents.push(Agent { opinion, receptivity });
-                                                        },
-                                                        Err(error) => {
-                                                            println!("{}", error);
-                                                            return
-                                                        }
-                                                    }
-                                                }
-                                                Err(error) => {
-                                                    println!("{}", error);
-                                                    return
-                                                } 
-                                            }                 
-                                    }
-                                  }
-                                }
-                            },
-                            Err(error) => {
-                                println!("{}", error);
-                                return
-                            }  
-                        }
-                        
-                    }
-                }
-                Err(error) => {
-                    println!("{}", error);
-                    return
-                }
-            }
-        },
-        Err(error) => {
-            println!("{}", error);
-            return
-       },
-    }
+    
 
     
    
