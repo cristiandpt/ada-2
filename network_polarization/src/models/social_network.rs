@@ -1,6 +1,7 @@
 use super::agent::Agent;
 
-pub struct SocialNetwok {
+#[derive(Debug)]
+pub struct SocialNetwork {
     pub resouces: i64,
     pub agents: Vec<Agent>
 }
